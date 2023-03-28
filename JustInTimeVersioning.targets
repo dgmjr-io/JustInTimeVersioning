@@ -1,0 +1,22 @@
+<!--
+ Dgmjr.JustInTimeVersioning.targets
+ 
+   Created: 2022-10-22-03:23:14
+   Modified: 2022-10-29-03:07:50
+ 
+   Author: David G. Moore, Jr, <david@dgmjr.io>
+   
+   Copyright © 2022-2023 David G. Moore, Jr,, All Rights Reserved
+      License: MIT (https://opensource.org/licenses/MIT)
+-->
+
+<Project>
+    <UsingTask TaskName="JustInTimeVersioning.SaveVersionNumberCentrally" AssemblyFile="$(AssemblyFile)" />
+    <Target Name="SaveVersionNumberCentrally" AfterTargets="Pack" DependsOnTargets="Pack">
+        <JustInTimeVersioning.SaveVersionNumberCentrally
+            PackageName="$(PackageId)"
+            Version="$(PackageVersion)" 
+            Configuration="$(Configuration)" />
+    </Target>
+    <Import Project="./InitializeJustInTimeVersioning.targets" />
+</Project>

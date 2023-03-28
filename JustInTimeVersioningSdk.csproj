@@ -1,0 +1,32 @@
+<!--
+ JustInTimeVersioning.csproj
+ 
+   Created: 2022-10-22-12:23:14
+   Modified: 2022-10-29-12:14:33
+ 
+   Author: David G. Moore, Jr, <david@dgmjr.io>
+   
+   Copyright © 2022-2023 David G. Moore, Jr,, All Rights Reserved
+      License: MIT (https://opensource.org/licenses/MIT)
+-->
+
+<Project Sdk="Microsoft.NET.Sdk">
+ <Import Project="./Compilation.props" />
+ <PropertyGroup>
+  <PackageId>JustInTimeVersioningSdk</PackageId>
+	<TargetFramework>netstandard2.0</TargetFramework>
+ </PropertyGroup>
+ <ItemGroup>
+  <PackageFile Include="./JustInTimeVersioning.props" PackagePath="sdk/Sdk.props" />
+  <PackageFile Include="./JustInTimeVersioning.targets" PackagePath="sdk/Sdk.targets" />
+  <PackageFile Include="./InitializeJustInTimeVersioning.targets" PackagePath="sdk/InitializeJustInTimeVersioning.targets" />
+  <PackageFile Include="$(OutputPath)$(AssemblyName).*" PackagePath="lib/%(Filename)%(Extension)" />
+ </ItemGroup>
+ <ItemGroup>
+    <PackageReference Include="System.Text.Json.Usings" />
+    <PackageReference Include="MSBuild.Usings" />
+    <PackageReference Update="Microsoft.Build.Framework" VersionOverride="17.4.0" />
+    <PackageReference Update="Microsoft.Build.Utilities.Core" VersionOverride="17.4.0" />
+    <SourceGenerator Include="Dgmjr.RegexDtoGenerator" />
+ </ItemGroup>
+</Project>

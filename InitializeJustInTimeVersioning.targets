@@ -1,0 +1,54 @@
+<!--
+ InitializeJustInTimeVersioning.targets
+ 
+   Created: 2022-11-01-11:59:45
+   Modified: 2022-11-01-11:59:45
+ 
+   Author: David G. Moore, Jr, <david@dgmjr.io>
+   
+   Copyright © 2022-2023 David G. Moore, Jr,, All Rights Reserved
+      License: MIT (https://opensource.org/licenses/MIT)
+-->
+<Project>
+	<PropertyGroup>
+		<Configurations Condition="'$(Configurations)' == ''">Testing;Local;Debug;Staging;Release</Configurations>
+    <_GitRoot Condition="'$(_GitRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), ".git"))</_GitRoot>
+    <_GitRoot Condition="'$(_GitRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), ".git/HEAD"))</_GitRoot>
+    <JustInTimeVersioningInitDirectory>$(_GitRoot)../</JustInTimeVersioningInitDirectory>
+    <JustInTimeVersioningInitPackagesDirectory>$(JustInTimeVersioningInitDirectory)Packages/</JustInTimeVersioningInitPackagesDirectory>
+    <ForceReinitJustInTimeVersioning>false</ForceReinitJustInTimeVersioning>
+	</PropertyGroup>
+  <PropertyGroup>
+    <JustInTimeVersioningPropsFileInitialContents>
+      <![CDATA[
+        <Project />
+      ]]>
+    </JustInTimeVersioningPropsFileInitialContents>
+    <JustInTimeVersioningJsonFileInitialContents>
+      <![CDATA[
+        { }
+      ]]>
+    </JustInTimeVersioningJsonFileInitialContents>
+  </PropertyGroup>
+  <ItemGroup>
+    <Configuration Include="$(Configurations.Split(';'))" />
+  </ItemGroup>
+  <Target Name="InitJustInTimeVersioning">
+    <MakeDir Directories="$(JustInTimeVersioningInitDirectory)/Packages" Condition="!Exists($(JustInTimeVersioningInitDirectory)/Packages)" />
+    <WriteLinesToFile File="$(JustInTimeVersioningInitPackagesDirectory)@(Configuration).props" Lines="$(JustInTimeVersioningPropsFileInitialContents)" 
+      Condition="!Exists($(JustInTimeVersioningInitPackagesDirectory)@(Configuration).props) Or '$(ForceReinitJustInTimeVersioning)' == 'true'" />
+      
+    <WriteLinesToFile File="$(JustInTimeVersioningInitPackagesDirectory)@(Configuration).json" Lines="$(JustInTimeVersioningJsonFileInitialContents)" 
+      Condition="!Exists($(JustInTimeVersioningInitPackagesDirectory)@(Configuration).props) Or '$(ForceReinitJustInTimeVersioning)' == 'true'" />
+
+    <Warning Code="JITV001PROPS" 
+            File="$(JustInTimeVersioningInitPackagesDirectory)@(Configuration).props."
+            Condition="Exists($(JustInTimeVersioningInitPackagesDirectory)@(Configuration).props) And '$(ForceReinitJustInTimeVersioning)' != 'true'"
+            Text="The JustInTimeVersioning '.props' file for configuration @(Configuration) already exists at the following location: %0a'$(JustInTimeVersioningInitPackagesDirectory)@(Configuration).props.'%0a%0aIf you intended to overwrite this file, either delete it and re-run this command or run it again with the global property ForceReinitJustInTimeVersioning set to 'true.'" />
+
+    <Warning Code="JITV001JSON" 
+            File="$(JustInTimeVersioningInitPackagesDirectory)@(Configuration).json"
+            Condition="Exists($(JustInTimeVersioningInitPackagesDirectory)@(Configuration).json) And '$(ForceReinitJustInTimeVersioning)' != 'true'"
+            Text="The JustInTimeVersioning '.json' file for configuration @(Configuration) already exists at the following location: %0a'$(JustInTimeVersioningInitPackagesDirectory)@(Configuration).json.'%0a%0aIf you intended to overwrite this file, either delete it and re-run this command or run it again with the global property ForceReinitJustInTimeVersioning set to 'true.'" />
+  </Target>
+</Project>

@@ -1,0 +1,45 @@
+<!--
+ * Directory.Build.props
+ * 
+ *   Created: 2022-11-10-08:28:12
+ *   Modified: 2022-11-10-08:28:12
+ * 
+ *   Author: David G. Moore, Jr, <david@dgmjr.io>
+ *   
+ *   Copyright © 2022-2023 David G. Moore, Jr,, All Rights Reserved
+ *      License: MIT (https://opensource.org/licenses/MIT)
+-->
+<Project>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Title>Dgmjr Version Synchronizer</Title>
+    <Description>Keeps central version records in sync with the repos</Description>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <SlnGenSolutionFolder>src</SlnGenSolutionFolder>
+    <AssemblyName>JustInTimeVersioning</AssemblyName>
+    <RootNamespace>JustInTimeVersioning</RootNamespace>
+    <OutputPath>lib/</OutputPath>
+    <MinVerTagPrefix>jit-v</MinVerTagPrefix>
+    <EnableGlobalCodeGenerators>false</EnableGlobalCodeGenerators>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" PrivateAssets="None" VersionOverride="[17.3.2,)" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" PrivateAssets="None" VersionOverride="[17.3.2,)" />
+    <PackageReference Include="Microsoft.Build" PrivateAssets="None" VersionOverride="[15.9.20,)" Condition="$(TargetFramework) == 'netstandard2.0'" />
+    <PackageReference Include="Microsoft.Build" PrivateAssets="None" VersionOverride="[17.3.2,)" Condition="$(TargetFramework) == 'net6.0'" />
+    <PackageReference Include="System.Text.Json" PrivateAssets="None" />
+  </ItemGroup>
+  <ItemGroup Label="Global Usings">
+    <Using Include="Microsoft.Build.Utilities.Task" Alias="MSBTask" />
+    <Using Include="System.Text.Json" />
+    <Using Include="System.Text.RegularExpressions" />
+    <Using Include="Microsoft.Build.Execution" Alias="MSBEx" />
+    <Using Include="Microsoft.Build.Framework" Alias="MSBF" />
+    <Using Include="Microsoft.Build" Alias="MSB" />
+    <Using Include="Microsoft.Build.Utilities" Alias="MSBUtils" />
+    <Using Include="Microsoft.Build.Utilities.TaskLoggingHelper" Alias="MSBLog" />
+  </ItemGroup>
+  <Import Project="./JustInTimeVersioning.props" />
+  <Import Project="./JustInTimeVersioning.targets" />
+	<!-- <Import Project="../../../Directory.Build/*.targets" /> -->
+</Project>

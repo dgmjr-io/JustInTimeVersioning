@@ -1,0 +1,18 @@
+<!--
+ Build.props
+ 
+   Created: 2022-10-23-04:28:47
+   Modified: 2022-10-29-12:16:50
+ 
+   Author: David G. Moore, Jr, <david@dgmjr.io>
+   
+   Copyright © 2022-2023 David G. Moore, Jr,, All Rights Reserved
+      License: MIT (https://opensource.org/licenses/MIT)
+-->
+
+<Project>
+  <PropertyGroup>
+    <AssemblyFile Condition="'$(PackageId)' != 'JustInTimeVersioning' And '$(PackageId)' != 'JustInTimeVersioningSdk'">../lib/JustInTimeVersioning.dll</AssemblyFile>
+    <AssemblyFile Condition="'$(PackageId)' == 'JustInTimeVersioning' Or '$(PackageId)' == 'JustInTimeVersioningSdk'">./lib/JustInTimeVersioning.dll</AssemblyFile>
+  </PropertyGroup>
+</Project>
