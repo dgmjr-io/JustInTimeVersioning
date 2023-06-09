@@ -1,14 +1,15 @@
-//
-// SaveVersionNumberCentrally.cs
-//
-//   Created: 2022-10-24-04:48:49
-//   Modified: 2022-10-29-12:13:24
-//
-//   Author: David G. Moore, Jr, <david@dgmjr.io>
-//
-//   Copyright © 2022-2023 David G. Moore, Jr,, All Rights Reserved
-//      License: MIT (https://opensource.org/licenses/MIT)
-//
+/*
+ * SaveVersionNumberCentrally.cs
+ *
+ *   Created: 2023-03-12-08:11:45
+ *   Modified: 2023-04-29-07:07:28
+ *
+ *   Author: David G. Moore, Jr. <david@dgmjr.io>
+ *
+ *   Copyright © 2022 - 2023 David G. Moore, Jr., All Rights Reserved
+ *      License: MIT (https://opensource.org/licenses/MIT)
+ */
+
 
 namespace JustInTimeVersioning;
 
@@ -42,20 +43,13 @@ public class SaveVersionNumberCentrally : MSBTask, IDisposable
         {
             if (disposing)
             {
-                // TODO: dispose managed state (managed objects)
+                _versionManager?.Dispose();
             }
 
             _versionManager?.Dispose();
             disposedValue = true;
         }
     }
-
-    // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-    // ~SaveVersionNumberCentrally()
-    // {
-    //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-    //     Dispose(disposing: false);
-    // }
 
     public void Dispose()
     {
