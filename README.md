@@ -1,32 +1,51 @@
 ---
-author: David G. Moore, Jr,
-author_email: david@dgmjr.io
-title: README.md
-modified: 2022-11-19-04:04:44
-created: 2022-11-10-09:07:36
+title: Just-in-Time-Versioning SDK
+authors:
+  - dgmjr
+description: An SDK for ensuring that NuGet package versions are kept in sync just in time.
+type: readme
+slug: time-versioning-sdk
+project: Shared
 license: MIT
+lastmod: 2023-07-02T00:20:59.751Z
+version: 0.0.1
+date: 2023-07-02T00:09:50.598Z
+keywords:
+  - msbuild-sdk
+  - just-in-time-versioning
+  - versioning
 ---
 
-# JustInTimeVersioning
+# Just-in-Time-Versioning SDK
 
-A utility to keep central version records in sync with the repository.  This is useful for projects with multiple repositories that need to share a common version record.
+An SDK for ensuring that NuGet package versions are kept in sync just in time.
 
-## Installation
+## Prerequisites
 
-The following command will initialize the repository with no version numbers in the root of the repository, up one directory.
+- [MinVer](https://github.com/adamralph/minver)
+- [GitInfo](https://github.com/devlooped/GitInfo)
 
-```bash
-dotnet build --Target:InitJustInTimeVersioning JustInTimeVersioning.csproj
+## Getting Started
+
+Add the following code to any of your project files:
+
+```xml
+<Sdk Name="JustInTimeVersioning" />
 ```
 
-To control which directory is used, use the `JustInTimeVersioningInitPackagesDirectory` property like this:
+And also add the following to your `global.json` file:
 
-```bash
-dotnet build --Target:InitJustInTimeVersioning --property:JustInTimeVersioningInitPackagesDirectory=C:\JustInTimeVersioning
+```json
+"msbuild-sdks":{
+    "JustInTimeVersioning": "the-current-version-of-JustInTimeVersioning"
+}
 ```
 
-This will create the following directory structure:
+Next, you'll want to initialize your just-in-time packages folder by running the following command:
 
-## Usage
+```shell
+    msbuild [yourprojectname].*proj -t:InitJustInTimeVersioning
+```
 
-Now, simply refer to the JustInTimeVersioning `.csproj` or `nuget` package from your `.csproj` files and they will automatically update the version number in the
+This will create the packages folder and populate it with empty `.json` and `.props` files, which will be used to hold the latest versions of your NuGet packages.
+
