@@ -20,10 +20,19 @@ public class SaveVersionNumberCentrally : MSBTask, IDisposable
 
     [MSBF.Required]
     public string Version { get; set; } = string.Empty;
+
     [MSBF.Required]
     public string Configuration { get; set; } = "Local";
-    public string VersionsJsonFileName { get => VersionManager.VersionsJsonFileName; set => VersionManager.VersionsJsonFileName = value; }
-    public string VersionsPropsFileName { get => VersionManager.VersionsPropsFileName; set => VersionManager.VersionsPropsFileName = value; }
+    public string VersionsJsonFileName
+    {
+        get => VersionManager.VersionsJsonFileName;
+        set => VersionManager.VersionsJsonFileName = value;
+    }
+    public string VersionsPropsFileName
+    {
+        get => VersionManager.VersionsPropsFileName;
+        set => VersionManager.VersionsPropsFileName = value;
+    }
     private VersionManager? _versionManager = null!;
     private bool disposedValue;
 
@@ -33,7 +42,9 @@ public class SaveVersionNumberCentrally : MSBTask, IDisposable
     {
         VersionManager.Configuration = Configuration;
         VersionManager.SaveVersion(PackageName, Version);
-        Log.LogMessage($"Saved version {Version} for package {PackageName} to {VersionManager.VersionsPropsFilePath}.");
+        Log.LogMessage(
+            $"Saved version {Version} for package {PackageName} to {VersionManager.VersionsPropsFilePath}."
+        );
         return true;
     }
 
